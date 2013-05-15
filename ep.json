@@ -1,18 +1,19 @@
 {
-  "parts": [
-    {
-      "name": "embedmedia",
-      "hooks": {
-	"eejsBlock_editbarMenuLeft": "ep_embedmedia/hooks:eejsBlock_editbarMenuLeft",
-	"eejsBlock_scripts": "ep_embedmedia/hooks:eejsBlock_scripts",
-	"eejsBlock_styles": "ep_embedmedia/hooks:eejsBlock_styles",
-	"eejsBlock_body": "ep_embedmedia/hooks:eejsBlock_body"
-      },
-      "client_hooks": {
-        "aceInitInnerdocbodyHead": "ep_embedmedia/static/js/hooks:aceInitInnerdocbodyHead",
-        "aceAttribsToClasses": "ep_embedmedia/static/js/hooks:aceAttribsToClasses",
-        "aceCreateDomLine": "ep_embedmedia/static/js/hooks:aceCreateDomLine"
-      }
-    }
-  ]
+	"parts": [
+		{
+			"name": "embedmedia",
+			"hooks": {
+				"eejsBlock_body": "ep_embedmedia/hooks:eejsBlock_body",
+				"eejsBlock_editbarMenuLeft": "ep_embedmedia/hooks:eejsBlock_editbarMenuLeft",
+				"eejsBlock_scripts": "ep_embedmedia/hooks:eejsBlock_scripts",
+				"eejsBlock_styles": "ep_embedmedia/hooks:eejsBlock_styles"
+			},
+			"client_hooks": {
+				"aceAttribsToClasses": "ep_embedmedia/static/js/hooks:aceAttribsToClasses",
+				"aceCreateDomLine": "ep_embedmedia/static/js/hooks:aceCreateDomLine",
+				"aceInitInnerdocbodyHead": "ep_embedmedia/static/js/hooks:aceInitInnerdocbodyHead",
+				"documentReady": "ep_embedmedia/static/js/hooks:documentReady"
+			}
+		}
+	]
 }
