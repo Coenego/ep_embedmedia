@@ -1,3 +1,7 @@
+.oembed{
+	display: block;
+}
+
 .embedMedia {
   border: 2px solid #bbbbbb;
   margin: 2px;

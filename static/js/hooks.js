@@ -33,6 +33,14 @@ exports.aceAttribsToClasses = function(hook_name, args, cb) {
 };
 
 /**
+ * This hook is called for elements in the DOM that have the "lineMarkerAttribute" set. 
+ * You can add elements into this category with the aceRegisterBlockElements hook.
+*/
+exports.aceDomLineProcessLineAttributes = function(hook_name, context, cb) {
+	console.log('aceDomLineProcessLineAttributes');
+};
+
+/**
 * This hook is called for any line being processed by the formatting engine, 
 * unless the aceDomLineProcessLineAttributes hook returned true, in which case this hook is skipped.
 * 
@@ -40,28 +48,22 @@ exports.aceAttribsToClasses = function(hook_name, args, cb) {
 * @param  {Object} context         Object containing information about the context
 */
 exports.aceCreateDomLine = function(hook_name, args, cb) {
-	if (args.cls.indexOf('embedMedia:') >= 0) {
-		var clss = [];
-		var argClss = args.cls.split(" ");
-		var value;
+	if (args.cls.indexOf('embedMedia:') > -1) {
+		var html = unescape(args.cls.split('embedMedia:')[1]);
 		
-		for (var i = 0; i < argClss.length; i++) {
-			var cls = argClss[i];
-			if (cls.indexOf("embedMedia:") != -1) {
-				value = cls.substr(cls.indexOf(":")+1);
-			} else {
-				clss.push(cls);
-			}
-		}
+		console.log(hook_name);
+		console.log(args);
+		console.log(html);	
 		
 		return cb([{
-			cls: clss.join(" "), 
-			extraOpenTags: "<span class='embedMedia'><span class='media'>" + exports.cleanEmbedCode(unescape(value)) + "</span><span class='character'>", 
-			extraCloseTags: '</span>'
+			cls: 'oembed',
+			extraOpenTags: '<span class="embedMedia"><span class="media">' + html + '</span><span class="character">', 
+			extraCloseTags: '</span></span>'
 		}]);
+	} else {
+		console.log('aceCreateDomLine ignoring');
+		return cb();
 	}
-	
-	return cb();
 };
 
 var wrap = function (obj) {
@@ -101,44 +103,4 @@ exports.sanitize = function (inputHtml) {
 		}
 		return attribs;
 	});
-}
-
-exports.cleanEmbedCode = function (orig) {
-	var res = null;
-	
-	value = $.trim(orig);
-	
-	if (value.indexOf('http://') == 0 || value.indexOf('https://') == 0) {
-		
-		res = "<p>IFRAME HTML SHIZZLE</p>"
-		
-		/*
-		if (value.indexOf("www.youtube.com") != -1) {
-			var video = escape(parseUrlParams(value).v);
-			res = '<iframe width="420" height="315" src="https://www.youtube.com/embed/' + video + '" frameborder="0" allowfullscreen></iframe>';
-		} else if (value.indexOf("vimeo.com") != -1) {
-			var video = escape(value.split("/").pop());
-			res = '<iframe src="http://player.vimeo.com/video/' + video + '?color=ffffff" width="420" height="236" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-		} else {
-			console.warn("Unsupported embed url: " + orig);
-		}
-		*/		
-		
-	} else if (value.indexOf('<') == 0) {
-		value = $.trim(exports.sanitize(value));
-		if (value != '') {
-			console.log([orig, value]);
-			res = value;
-		} else {
-			console.warn("Invalid embed code: " + orig);
-		}
-	} else {
-		console.warn("Invalid embed code: " + orig);
-	}
-	
-	if (!res) {
-		return  "<img src='/static/plugins/ep_embedmedia/static/html/invalid.png'>";
-	}
-	
-	return res;
 }

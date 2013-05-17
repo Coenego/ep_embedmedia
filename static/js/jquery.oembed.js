@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * jquery oembed plugin
  *
  * Copyright (c) 2009 Richard Chamorro
@@ -102,7 +102,6 @@
     };
 
     function embedCode(container, externalUrl, embedProvider) {
-
         var requestUrl = getRequestUrl(embedProvider, externalUrl), 		
 			ajaxopts = $.extend({
 				url: requestUrl,
